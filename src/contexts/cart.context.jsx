@@ -1,4 +1,35 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useReducer } from "react";
+
+export const CART_ACTION_TYPES = {
+  SET_IS_CART_OPEN: "SET_IS_CART_OPEN",
+  SET_CART_ITEMS: "SET_CART_ITEMS",
+};
+
+const INITIAL_STATE = {
+  isCartOpen: false,
+  cartItems: [],
+  cartQuantity: 0,
+  cartTotal: 0,
+};
+
+const cartReducer = (state, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case CART_ACTION_TYPES.SET_IS_CART_OPEN:
+      return {
+        ...state,
+        isCartOpen: payload,
+      };
+    case CART_ACTION_TYPES.SET_CART_ITEMS:
+      return {
+        ...state,
+        ...payload,
+      };
+    default:
+      throw new Error(`Unhandled type ${type} in cartReducer`);
+  }
+};
 
 const addCartItem = (cartItems, productToAdd) => {
   const existingCartItem = cartItems.find(
@@ -51,35 +82,48 @@ export const CartContext = createContext({
 });
 
 export const CartProvider = ({ children }) => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [cartQuantity, setCartQuantity] = useState(0);
-  const [cartTotal, setCartTotal] = useState(0);
+  const [{ cartItems, isCartOpen, cartQuantity, cartTotal }, dispatch] =
+    useReducer(cartReducer, INITIAL_STATE);
 
-  useEffect(() => {
+  const setIsCartOpen = (bool) => {
+    dispatch({
+      type: CART_ACTION_TYPES.SET_IS_CART_OPEN,
+      payload: bool,
+    });
+  };
+
+  const updateCartItemsReducer = (newCartItems) => {
     const newCartCount = cartItems.reduce((quantity, item) => {
       return quantity + item.quantity;
     }, 0);
-    setCartQuantity(newCartCount);
-  }, [cartItems]);
 
-  useEffect(() => {
     const newCartTotal = cartItems.reduce((total, item) => {
       return total + item.quantity * item.price;
     }, 0);
-    setCartTotal(newCartTotal);
-  }, [cartItems]);
+
+    dispatch({
+      type: CART_ACTION_TYPES.SET_CART_ITEMS,
+      payload: {
+        cartItems: newCartItems,
+        cartTotal: newCartTotal,
+        cartQuantity: newCartCount,
+      },
+    });
+  };
 
   const addItemToCart = (productToAdd) => {
-    setCartItems(addCartItem(cartItems, productToAdd));
+    const newCartItems = addCartItem(cartItems, productToAdd);
+    updateCartItemsReducer(newCartItems);
   };
 
   const removeItemFromCart = (productToRemove) => {
-    setCartItems(removeCartItem(cartItems, productToRemove));
+    const newCartItems = removeCartItem(cartItems, productToRemove);
+    updateCartItemsReducer(newCartItems);
   };
 
   const clearItemFromCart = (product) => {
-    setCartItems(clearCartItem(cartItems, product));
+    const newCartItems = clearCartItem(cartItems, product);
+    updateCartItemsReducer(newCartItems);
   };
 
   const value = {
