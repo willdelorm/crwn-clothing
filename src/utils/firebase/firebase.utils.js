@@ -61,7 +61,6 @@ export const addCollectionAndDocuments = async (
   });
 
   await batch.commit();
-  console.log("done");
 };
 
 // Get an array of the categories collection and all of their items
