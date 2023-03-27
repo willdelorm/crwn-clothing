@@ -1,4 +1,6 @@
+import { CategoryItem } from "../categories/category.types";
 import { CART_ACTION_TYPES, CartItem } from "./cart.types";
+
 import {
   createAction,
   ActionWithPayload,
@@ -17,7 +19,7 @@ export type SetCartItems = ActionWithPayload<
 
 const addCartItem = (
   cartItems: CartItem[],
-  productToAdd: CartItem
+  productToAdd: CategoryItem
 ): CartItem[] => {
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === productToAdd.id
@@ -42,9 +44,7 @@ const removeCartItem = (
     (cartItem) => cartItem.id === productToRemove.id
   );
 
-  if (!existingCartItem) return cartItems;
-
-  if (existingCartItem.quantity === 1) {
+  if (existingCartItem && existingCartItem.quantity === 1) {
     return clearCartItem(cartItems, productToRemove);
   }
 
@@ -69,23 +69,28 @@ export const setIsCartOpen = withMatcher(
     createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool)
 );
 
+export const setCartItems = withMatcher(
+  (cartItems: CartItem[]): SetCartItems =>
+    createAction(CART_ACTION_TYPES.SET_CART_ITEMS, cartItems)
+);
+
 export const addItemToCart = withMatcher(
-  (cartItems: CartItem[], productToAdd: CartItem): SetCartItems => {
+  (cartItems: CartItem[], productToAdd: CategoryItem): SetCartItems => {
     const newCartItems = addCartItem(cartItems, productToAdd);
-    return createAction(CART_ACTION_TYPES.SET_CART_ITEMS, newCartItems);
+    return setCartItems(newCartItems);
   }
 );
 
 export const removeItemFromCart = withMatcher(
   (cartItems: CartItem[], productToRemove: CartItem): SetCartItems => {
     const newCartItems = removeCartItem(cartItems, productToRemove);
-    return createAction(CART_ACTION_TYPES.SET_CART_ITEMS, newCartItems);
+    return setCartItems(newCartItems);
   }
 );
 
 export const clearItemFromCart = withMatcher(
   (cartItems: CartItem[], product: CartItem): SetCartItems => {
     const newCartItems = clearCartItem(cartItems, product);
-    return createAction(CART_ACTION_TYPES.SET_CART_ITEMS, newCartItems);
+    return setCartItems(newCartItems);
   }
 );
