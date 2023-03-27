@@ -13,14 +13,14 @@ export enum USER_ACTION_TYPES {
   SIGN_OUT_FAILED = "user/SIGN_OUT_FAILED",
 }
 
-export type User = {
-  email: string;
-  password: string;
-  displayName: string;
-};
+// export type User = {
+//   email: string;
+//   password: string;
+//   displayName: string;
+// };
 
-export type AdditionalDetails = {
-  [key: string]: string;
-};
+// export type AdditionalDetails = {
+//   [key: string]: string;
+// };
 
-export type UserPlus = User & AdditionalDetails;
+// export type UserPlus = User & AdditionalDetails;
