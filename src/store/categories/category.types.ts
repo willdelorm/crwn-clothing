@@ -5,9 +5,9 @@ export enum CATEGORIES_ACTION_TYPES {
 }
 
 export type CategoryItem = {
-  id: number;
+  id: string;
+  title: string;
   imageUrl: string;
-  name: string;
   price: number;
 };
 
