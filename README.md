@@ -13,9 +13,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/willdelorm/crwn-clothing">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
 <h3 align="center">Crwn Clothing</h3>
 
@@ -123,8 +120,6 @@ Project Link: [https://github.com/willdelorm/crwn-clothing](https://github.com/w
 ## Acknowledgments
 
 * [Zero to Mastery](https://zerotomastery.io)
-* []()
-* []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -144,6 +139,6 @@ Project Link: [https://github.com/willdelorm/crwn-clothing](https://github.com/w
 [license-url]: https://github.com/willdelorm/crwn-clothing/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/willdelorm
-[product-screenshot]: screenshot.png
+[product-screenshot]: public/screenshot.png
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
